@@ -1,0 +1,6 @@
+# 🖊Assuntos disponiveis:
+
+- Generics
+- Operadores
+  
+
