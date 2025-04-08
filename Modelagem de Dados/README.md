@@ -20,4 +20,12 @@ A modelagem de dados faz o mesmo para os dados de um sistema: cria um “projeto
 > _Ex: CPF, Nome, Data._
 > 
 > ***Informação:*** _São os fatos organizados de maneira a produzir um significado. Dados colocados em contexto._  
-> _Ex: Lista de clientes com seus nomes, data de nascimento e números de CPF ordenados._   
+> _Ex: Lista de clientes com seus nomes, data de nascimento e números de CPF ordenados._
+
+## Níveis de Modelagem
+
+A Modelagem de Dados é dividida em três [níveis de modelagem](https://github.com/AlessandroMelo22/Resumos/blob/main/Modelagem%20de%20Dados/n%C3%ADveis-de-modelagem.md):
+- Conceitual
+- Lógico
+- Físico
+  
