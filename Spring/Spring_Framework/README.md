@@ -9,17 +9,16 @@ Esses **grupos de módulos** formam a base para entender a arquitetura modular d
 ## 📦 Core Container
 Responsável pela Inversão de Controle (IoC) e Injeção de Dependência (DI):
 - [`spring-core`](https://github.com/AlessandroMelo22/Resumos/blob/main/Spring/Spring_Framework/1-Spring_Core_Container/1_spring-core.md)
-- [`spring-beans`](./core-container/spring-beans.md)
-- [`spring-context`](./core-container/spring-context.md)
-- [`spring-context-support`](./core-container/spring-context-support.md)
-- [`spring-expression`](./core-container/spring-expression.md)
+- [`spring-beans`](https://github.com/AlessandroMelo22/Resumos/blob/main/Spring/Spring_Framework/1-Spring_Core_Container/2_spring-beans.md)
+- [`spring-context`](https://github.com/AlessandroMelo22/Resumos/blob/main/Spring/Spring_Framework/1-Spring_Core_Container/3_spring-context.md)
+- [`spring-expression`](https://github.com/AlessandroMelo22/Resumos/blob/main/Spring/Spring_Framework/1-Spring_Core_Container/4_spring-expression.md)
 
 ---
 
 ## 🌀 AOP
 Suporte à **programação orientada a aspectos**, para lidar com funcionalidades transversais (ex: logging, segurança):
-- [`spring-aop`](./aop/spring-aop.md)
-- [`spring-aspects`](./aop/spring-aspects.md)
+- [`spring-aop`](https://github.com/AlessandroMelo22/Resumos/blob/main/Spring/Spring_Framework/2-Aspect_Oriented_Programmig_AOP_e_Instrumentation/1_spring-aop.md)
+- [`spring-aspects`](https://github.com/AlessandroMelo22/Resumos/blob/main/Spring/Spring_Framework/2-Aspect_Oriented_Programmig_AOP_e_Instrumentation/2_spring-aspects.md)
 
 ---
 
