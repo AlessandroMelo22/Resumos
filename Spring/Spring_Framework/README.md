@@ -8,7 +8,7 @@ Esses **grupos de módulos** formam a base para entender a arquitetura modular d
 
 ## 📦 Core Container
 Responsável pela Inversão de Controle (IoC) e Injeção de Dependência (DI):
-- [`spring-core`](Spring/Spring_Framework/1-Spring_Core_Container/1_spring-core.md)
+- [`spring-core`](./Spring/Spring_Framework/1-Spring_Core_Container/1_spring-core.md)
 - [`spring-beans`](./core-container/spring-beans.md)
 - [`spring-context`](./core-container/spring-context.md)
 - [`spring-context-support`](./core-container/spring-context-support.md)
