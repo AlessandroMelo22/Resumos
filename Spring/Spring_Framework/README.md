@@ -1,9 +1,10 @@
 # Camadas do Spring Framework  
->  Este repositório contém resumos organizados por **grupos de módulos** do Spring Framework, para facilitar o estudo e a compreensão da arquitetura modular do Spring.
+
 
 O Spring Framework é dividido em **módulos (dependências) que são agrupados por responsabilidade funcional**. 
 Esses **grupos de módulos** formam a base para entender a arquitetura modular do Spring, como por exemplo o Core Container, responsável pela IoC e DI, e o grupo Web, que engloba módulos para aplicações web e REST.
 
+>  Este repositório contém resumos organizados por **grupos de módulos** do Spring Framework, para facilitar o estudo e a compreensão da arquitetura modular do Spring.
 ---
 
 ## 📦 Core Container
@@ -24,33 +25,34 @@ Suporte à **programação orientada a aspectos**, para lidar com funcionalidade
 
 ## 💾 Data Access / Integration
 Módulos voltados para **persistência de dados**, integração com bancos de dados, mensagens e outras tecnologias:
-- [`spring-jdbc`](./data-access/spring-jdbc.md)
-- [`spring-orm`](./data-access/spring-orm.md)
-- [`spring-tx`](./data-access/spring-tx.md)
-- [`spring-messaging`](./data-access/spring-messaging.md)
-- [`spring-jms`](./data-access/spring-jms.md)
+- [`spring-jdbc`](https://github.com/AlessandroMelo22/Resumos/blob/main/Spring/Spring_Framework/3-Data_Acess_e_Integration/1_spring-jdbc.md)
+- [`spring-orm`](https://github.com/AlessandroMelo22/Resumos/blob/main/Spring/Spring_Framework/3-Data_Acess_e_Integration/2_spring-orm.md)
+- [`spring-tx`](https://github.com/AlessandroMelo22/Resumos/blob/main/Spring/Spring_Framework/3-Data_Acess_e_Integration/3_spring-tx.md)
+- [`spring-messaging`](https://github.com/AlessandroMelo22/Resumos/blob/main/Spring/Spring_Framework/3-Data_Acess_e_Integration/4_spring-messaging.md)
+- [`spring-jms`](https://github.com/AlessandroMelo22/Resumos/blob/main/Spring/Spring_Framework/3-Data_Acess_e_Integration/5_spring-jms.md)
 - [`spring-oxm`](./data-access/spring-oxm.md) (Indisponível)
 
 ---
 
 ## 🌐 Web
 Recursos para desenvolvimento de **aplicações web e REST**:
-- [`spring-web`](./web/spring-web.md)
-- [`spring-webmvc`](./web/spring-webmvc.md)
-- [`spring-websocket`](./web/spring-websocket.md)
+- [`spring-web`](https://github.com/AlessandroMelo22/Resumos/blob/main/Spring/Spring_Framework/4-Web_e_MVC/1_spring-web.md)
+- [`spring-webmvc`](https://github.com/AlessandroMelo22/Resumos/blob/main/Spring/Spring_Framework/4-Web_e_MVC/2_spring-webmvc.md)
+- [`spring-webfux`](https://github.com/AlessandroMelo22/Resumos/blob/main/Spring/Spring_Framework/4-Web_e_MVC/3_spring-webflux.md)
+- [`spring-websocket`](https://github.com/AlessandroMelo22/Resumos/blob/main/Spring/Spring_Framework/4-Web_e_MVC/4_spring-websocket.md)
 
 ---
 
 ## 🔐 Security
 Responsável pela **autenticação e autorização** em aplicações Spring:
-- [`spring-security-core`](./security/spring-security-core.md)
-- [`spring-security-config`](./security/spring-security-config.md)
-- [`spring-security-oauth2`](./security/spring-security-oauth2.md)
-- [`spring-security-web`](./security/spring-security-web.md)
+- [`spring-security-core`](https://github.com/AlessandroMelo22/Resumos/blob/main/Spring/Spring_Framework/5-Security/1_spring-security-core.md)
+- [`spring-security-config`](https://github.com/AlessandroMelo22/Resumos/blob/main/Spring/Spring_Framework/5-Security/2_spring-security-config.md)
+- [`spring-security-oauth2`](https://github.com/AlessandroMelo22/Resumos/blob/main/Spring/Spring_Framework/5-Security/3_spring-security-oauth2.md)
+- [`spring-security-web`](https://github.com/AlessandroMelo22/Resumos/blob/main/Spring/Spring_Framework/5-Security/4_spring-security-web.md)
 - [`spring-security-test`](./security/spring-security-test.md) (Indisponível)
 
 ---
 
 ## 🧪 Test
 Ferramentas para **testes unitários e de integração** em aplicações Spring:
-- [`spring-test`](./test/spring-test.md)
+- [`spring-test`](https://github.com/AlessandroMelo22/Resumos/blob/main/Spring/Spring_Framework/6-Test/1_spring-test.md)
