@@ -4,7 +4,10 @@
 O Spring Framework é dividido em **módulos (dependências) que são agrupados por responsabilidade funcional**. 
 Esses **grupos de módulos** formam a base para entender a arquitetura modular do Spring, como por exemplo o Core Container, responsável pela IoC e DI, e o grupo Web, que engloba módulos para aplicações web e REST.
 
->  Este repositório contém resumos organizados por **grupos de módulos** do Spring Framework, para facilitar o estudo e a compreensão da arquitetura modular do Spring.
+> Este repositório contém resumos organizados por **grupos de módulos** do Spring Framework. A ideia é entender como o Spring funciona **por baixo dos panos**, módulo por módulo, reforçando a base antes de avançar para o Spring Boot.
+
+> Cada pasta representa um grupo de módulos com seus respectivos arquivos explicativos.
+
 ---
 
 ## 📦 Core Container
