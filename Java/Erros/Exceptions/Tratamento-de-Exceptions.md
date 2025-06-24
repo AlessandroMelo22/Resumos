@@ -88,7 +88,7 @@ try {
 
 }
 ```
-**OBSERVAÇÃO:** Como foi mencionado, o bloco `finally` é executado SEMPRE, mesmo se houver um erro ou não, porém a uma exceção, caso seja passado o método `System.exit(int status)` dentro do bloco `catch`, e o mesmo for executado, o bloco `finally` e qualquer coisa que esteja depois não serão executados:  
+⚠**OBSERVAÇÃO:** Como foi mencionado, o bloco `finally` é executado SEMPRE, mesmo se houver um erro ou não, porém a uma exceção, caso seja passado o método `System.exit(int status)` dentro do bloco `catch`, e o mesmo for executado, **o bloco `finally` e qualquer coisa que esteja depois não serão executados**:  
 
 ```
 try {
@@ -110,14 +110,81 @@ System.out.println("ESSE COMANDO NUNCA SERÁ EXECUTADO");
 
 ```
 ---
-### 🔸Métodos da super classe `Throwable` utilizados no tratamento de Exceptions:  
+### 🛠Métodos da super classe `Throwable` utilizados no tratamento de Exceptions:  
 
 `getMessage()` ➡ retorna a descrição do erro.  
 `printStackTrace()` ➡ imprime a _stack trace_ do erro
 
 ---
 
-### `throws`
+### 🔸`throws`
 
 A palavra-chave `throws` é **usada na declaração de um método para indicar que esse método pode lançar uma ou mais exceções**. Em outras palavras, **ela informa ao código que chama esse método que ele deve estar preparado para lidar com a possibilidade de uma exceção ocorrer durante a execução do método**:
 
+```
+public void lerArquivo() throws IOException {
+    // código que pode lançar IOException
+}
+```
+> Basicamente está sendo dito:  
+_"Esse método pode lançar essa exceção. Quem chamá-lo que decida o que fazer com ela"_.  
+
+
+Quando um método realiza a chamada de um método que possui o `throws` o compilador oferece duas opções de tratamento.  
+
+#### 1️⃣ Tratar aquela possível Exception utilizando o `try-catch`:
+
+```
+public class Exemplo {
+
+    public void metodoComThrows() throws IOException {
+        // código que pode lançar IOException
+    }
+
+    public void outroMetodo() {
+        try {
+            metodoComThrows(); // Tratado aqui
+
+        } catch (IOException e) {
+            System.out.println("Tratado: " + e.getMessage());
+        }
+    }
+}
+```
+
+#### 2️⃣ Usar `throws` no próprio método chamador, repassando a responsabilidade para outro método na pilha de chamadas:  
+
+```
+public class Exemplo {
+    public void metodoComThrows() throws IOException {
+        // código que pode lançar IOException
+    }
+
+    public void outroMetodo() throws IOException {
+        metodoComThrows(); // Não tratado aqui, repassado para quem chamar outroMetodo()
+    }
+}
+```
+⚠**OBSERVAÇÃO:** Vale lembrar que quando um método declara que pode lançar uma **Checked Exception** com `throws`, o método chamador é **OBRIGADO à tratar (utilizando `try-catch`) ou propagar (utilizando também o `throws`)**.
+
+Checked Exception:  
+```
+public void metodoComChecked() throws IOException {
+    throw new IOException("Erro de IO");
+}
+
+public void metodoChamador() throws IOException {
+    metodoComChecked(); // OBRIGADO a repassar (throws) ou tratar (try-catch).
+}
+```
+
+Unchecked Exception:
+```
+public void metodoComUnchecked() throws IllegalArgumentException {
+    throw new IllegalArgumentException("Erro de argumento");
+}
+
+public void metodoChamador() {
+    metodoComUnchecked(); // NÃO precisa try-catch nem throws → Compila normalmente
+}
+```
