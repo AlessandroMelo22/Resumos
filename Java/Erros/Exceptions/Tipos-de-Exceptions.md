@@ -5,6 +5,8 @@ No Java as Exceptions são divididas em:
 🟢 Checked Exceptions  
 🔴 Unchecked Exceptions  
 
+🎨 Custom Exceptions
+
 ---
 
 ### 🟢 Checked Exceptions
@@ -57,3 +59,38 @@ public void imprimirNome(String nome) {
 🧠 _Se `nome` for `null`, é um erro de lógica do programador — ele deveria ter garantido que nome nunca fosse nulo antes disso._
 
 _Você não recupera isso com elegância; precisa consertar o código._
+
+---
+
+### 🎨 Custom Exceptions
+
+No Java é possivel que o desenvolvedor **crie suas próprias exceções**, sendo uma ferramenta poderosa **para melhorar o tratamento de erros**.  
+
+Basicamente podemos criar tipos de exceções específicas para condições de erro exclusivas de uma aplicação.
+
+✔ Benefícios:  
+- **Código mais legível** ➡ Exceções personalizadas tornam o código mais claro e fácil de entender, pois a mensagem de erro reflete o problema específico. 
+- **Melhor manutenção** ➡ Ao usar exceções personalizadas, a manutenção do código se torna mais eficiente, pois os erros são mais facilmente localizados e corrigidos. 
+- **Informações adicionais** ➡ Permitem adicionar informações adicionais sobre o erro, como dados relevantes para o tratamento do problema. 
+- **Flexibilidade** ➡ Permitem tratar erros de forma diferente dependendo do contexto da aplicação. 
+- **Padronização de mensagens** ➡ Permitem padronizar mensagens de erro para a aplicação, garantindo consistência.
+
+```
+public class SaldoInsuficienteException extends Exception {
+    public SaldoInsuficienteException(String message) {
+        super(message);
+    }
+}
+```
+```
+public class Conta {
+    private double saldo;
+
+    public void sacar(double valor) throws SaldoInsuficienteException {
+        if (valor > saldo) {
+            throw new SaldoInsuficienteException("Saldo insuficiente para realizar o saque.");
+        }
+        saldo -= valor;
+    }
+}
+```
