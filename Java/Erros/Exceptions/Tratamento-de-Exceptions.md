@@ -117,6 +117,26 @@ System.out.println("ESSE COMANDO NUNCA SERÁ EXECUTADO");
 
 ---
 
+### 🔸`try`-with-resources  
+Basicamente o `try-with-resources` é um **recurso sintático do Java** que serve para garantir o **fechamento automático de recursos que implementam a interface** `AutoCloseable` (como conexões de arquivos, bancos de dados ou redes).
+
+Benefícios:
+- Evita vazamento de recursos, quando o programador esquece de fechá-lo ou não trata corretamente uma situação excepcional.
+- Menos propenso a erros de codificação, quando o programador não sabe ou esquece de executar todo o tratamento necessário.
+
+```
+try (BufferedReader br = new BufferedReader(new FileReader("arquivo.txt"))) {
+    String line;
+    while ((line = br.readLine()) != null) {
+        System.out.println(line);
+    }
+} catch (IOException e) {
+    System.err.println("Erro ao ler o arquivo: " + e.getMessage());
+}
+```
+📌Neste exemplo, o `BufferedReader` é automaticamente fechado no final do bloco `try`, independentemente se a leitura do arquivo foi bem-sucedida ou se ocorreu uma exceção.
+
+---
 ### 🔸`throws`
 
 A palavra-chave `throws` é **usada na declaração de um método para indicar que esse método pode lançar uma ou mais exceções**. Em outras palavras, **ela informa ao código que chama esse método que ele deve estar preparado para lidar com a possibilidade de uma exceção ocorrer durante a execução do método**:
