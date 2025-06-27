@@ -54,7 +54,7 @@ Atualmente, este repositório é mantido de forma pessoal, mas sinta-se à vonta
 ## 📄 Licença  
 Este projeto está licenciado sob a **licença MIT**. Você pode reutilizar o conteúdo, desde que mantenha os devidos créditos.
 
-Para mais informações, leia o arquivo [LICENSE]().
+Para mais informações, leia o arquivo [LICENSE](https://github.com/AlessandroMelo22/Resumos/blob/main/LICENSE).
 
 ## 👨‍💻 Autor
 Desenvolvido com dedicação por [Alessandro Melo](https://github.com/AlessandroMelo22).
