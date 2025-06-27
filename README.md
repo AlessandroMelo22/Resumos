@@ -43,10 +43,12 @@ Os resumos estão organizados em pastas por temas:
 
 ```
 📁 resumos-programacao
+├── git-e-github/
 ├── java/
-├── spring/
-├── modelagem-dados/
-└── banco-de-dados/
+├── maven/
+├── modelagem-de-dados/
+├── banco-de-dados/
+└── spring/
 ```
 ## 🤝 Contribuição  
 Atualmente, este repositório é mantido de forma pessoal, mas sinta-se à vontade para sugerir melhorias ou correções por meio de ***issues*** ou ***pull requests***.
