@@ -37,7 +37,7 @@ _- Criar o arquivo se ele não existir_
 
 ### 🔴 Unchecked Exceptions
 
-São exceções que **NÃO obrigam** você a **tratar ou propagar** e que acontecem em tempo de execução, além disso são exceções que herdam da classe `RunTimeException` (subclasse de `Exception`).  
+São exceções que o compilador **NÃO obriga** você a **tratar ou propagar**, e que acontecem em tempo de execução, além disso são exceções que herdam da classe `RunTimeException` (subclasse de `Exception`).  
 
 As **Unchecked Exceptions** se referem aos **erros não esperados e inrrecuperáveis** (_indicam erros na lógica de programação ou falhas no código_).
 
@@ -46,7 +46,7 @@ Exemplo de Unchecked Exceptions:
 - Divide por zero ➡ `ArithmeticException`
 - Acessa índice inválido em array ➡ `ArrayIndexOutOfBoundsException`
 
-Esses erros não deveriam acontecer se o código estivesse certo. Logo, não faz sentido forçar tratamento.
+⚠ Esses erros não deveriam acontecer se o código estivesse certo. Logo, não faz sentido forçar tratamento, por isso são **"inrrecuperáveis"**.
 
 Exemplo de código:
 ```
