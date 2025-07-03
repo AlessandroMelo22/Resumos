@@ -130,3 +130,12 @@ public class ApiError {
 ```
 
 - Nomear os métodos da classe `@ControllerAdvice` (ou `@RestControllerAdvice`) com o nome da Exception que será tratada
+
+```
+@ExceptionHandler(UsuarioNaoEncontradoException.class)
+    public ResponseEntity<ApiError> handleUsuarioNaoEncontradoException (UsuarioNaoEncontradoException ex,
+                                                                         HttpServletRequest request){
+        ApiError error = new ApiError(HttpStatus.NOT_FOUND, ex.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+```
