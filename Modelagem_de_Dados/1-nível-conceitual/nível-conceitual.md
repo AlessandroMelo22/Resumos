@@ -1,7 +1,9 @@
 # Nível Conceitual:
 
-No nível conceitual, é feita a representação abstrata do negócio, onde são definidas as **entidades**, seus **atributos** e **relacionamentos**.  É um nível de abstração que foca no "o quê" (o que o sistema precisa
+No nível conceitual, é feita a representação abstrata do negócio, visando  utilzando a ferrameta MER são definidas as [**entidades**](https://github.com/AlessandroMelo22/Resumos/blob/main/Modelagem_de_Dados/1-n%C3%ADvel-conceitual/entidades-e-atributos.md), seus [**atributos**](https://github.com/AlessandroMelo22/Resumos/blob/main/Modelagem_de_Dados/1-n%C3%ADvel-conceitual/entidades-e-atributos.md) e [**relacionamentos**](https://github.com/AlessandroMelo22/Resumos/blob/main/Modelagem_de_Dados/1-n%C3%ADvel-conceitual/entidades-e-atributos.md).  É um nível de abstração que foca no "o quê" (o que o sistema precisa
 armazenar e como os dados se relacionam), deixando o "como" (detalhes técnicos de implementação) para as próximas etapas.  
+
+Para a esse nivel 
 
 ### Benefícios do Nível Conceitual:
 
@@ -13,3 +15,4 @@ armazenar e como os dados se relacionam), deixando o "como" (detalhes técnicos 
 
 - **Levantamento de requisítos**  
 - Identificaçao das **Entidades**, seus **atributos** e **relacionamentos**
+
