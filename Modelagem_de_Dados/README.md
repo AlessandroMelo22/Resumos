@@ -3,10 +3,12 @@
 Modelagem de Dados é o processo de criar uma **representação visual dos dados** que serão armazenados e gerenciados em um sistema de informação. 
 Pense nisso como desenhar um mapa detalhado de como os dados se relacionam e como ficarão organizados dentro de um Banco de Dados.  
 
-## Para que serve?  
+### Para que serve?  
 
 Basicamente a Modelagem de Dados funciona como um projeto de uma casa, que mostra onde vão ficar os quartos, banheiro, cozinha etc. 
 A modelagem de dados faz o mesmo para os dados de um sistema: cria um “projeto” que define como os dados serão coletados, armazenados e gerenciados dentro de um Banco de Dados, garantindo que tudo funcione corretamente.  
+
+### Benefícios:
 
 **Organização:** Ajuda a organizar e estruturar grandes volumes de dados de forma lógica e eficiente. 
 
@@ -24,8 +26,8 @@ A modelagem de dados faz o mesmo para os dados de um sistema: cria um “projeto
 
 ## Níveis de Modelagem
 
-A Modelagem de Dados é dividida em três [níveis de modelagem](https://github.com/AlessandroMelo22/Resumos/blob/main/Modelagem%20de%20Dados/n%C3%ADveis-de-modelagem.md):
-- Conceitual
-- Lógico
-- Físico
+A Modelagem de Dados é dividida em **três níveis**:
+- [Conceitual](https://github.com/AlessandroMelo22/Resumos/tree/main/Modelagem_de_Dados/1-n%C3%ADvel-conceitual)
+- [Lógico](https://github.com/AlessandroMelo22/Resumos/tree/main/Modelagem_de_Dados/2-n%C3%ADvel-l%C3%B3gico)
+- [Físico](https://github.com/AlessandroMelo22/Resumos/tree/main/Modelagem_de_Dados/3-n%C3%ADvel-f%C3%ADsico)
   
