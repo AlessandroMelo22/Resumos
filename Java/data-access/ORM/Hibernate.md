@@ -1,6 +1,6 @@
 # Hibernate
 
-Basicamente o Hibernate **é um Framework [ORM](), uma implementação do [JPA](colocarOLinkDoPostSobreJPA)**.
+Basicamente o Hibernate **é um Framework [ORM](ColocarOLinkDoPostSobreORM), uma implementação do [JPA](colocarOLinkDoPostSobreJPA)**, sendo um dos mais utilizados no mercado.
 
 
   
@@ -318,36 +318,6 @@ sessionFactory.close();
 
 ```
 
-Recursos que todas as aplicações Standalone devem ter:
-
-| 
-Recurso:
- | 
-O que ele faz: |  |
-| --- | --- | --- |
-| Arquivo de configuração (`hibernate.cfg.xml`) | - Define dados de conexão(JDBC URL, usuário, senha)
-- Dialeto SQL (`hibernate.dialect`)
-- Estratégia de criação/validação do schema (`hibernate.hbm2ddl.auto`)
-- Lista de classes anotadas (`<mapping class="..."/>`).
- |  |
-| Classe `Configuration` | - Possui o método `configure()` que serve para carregar as configurações do arquivo `hibernate.cfg.xml`
-- Usada para criar `SessionFactory`
- |  |
-| `SessionFactory` | - É o **coração do Hibernate**: carrega *metadados*, gerencia pool de conexões.
-- Cria e fornece `Session` para realizar operações com o banco.
- |  |
-| `Session` | - É a **conexão lógica** com o banco. Você precisa dela para **fazer CRUD e queries**.
-- Sem `Session`, não há persistência nem leitura.
- |  |
-| `Transaction` | - Necessário quando há manipulação de dados (**INSERT**, **UPDATE**, **DELETE**…)
-- O Hibernate só envia as alterações ao banco quando você está dentro de uma transação.
-- Garante consistência. Se algo der errado, você pode fazer `rollback()`.
- |  |
-| Código de gerenciamento do ciclo de vida | É necessário cuidar manualmente de:
-- **Abrir e fechar sessões**.
-- **Iniciar e finalizar transações**.
-- **Fechar a** `SessionFactory` **no shutdown da aplicação**. |  |
-
 ## Relacionamento entre Entidades:
 
 Digamos que temos duas Entidades: **`Estudante`** e **`Notebook`**, e queremos mapear e representar o relacionamento entre essas entidades.
@@ -360,30 +330,28 @@ Para esse contexto, podemos ter vários tipos de Relacionamentos entre elas, por
 
 (**N:N**) → Um Estudante pode ter **N** Notebooks e um Notebook pode pertencer a **N** Estudantes;
 
+
 ### Direcionalidade do Relacionamento no JPA
 
 Além dos tipos de Relacionamentos, também definimos a **direção do Mapeamento** na **camada de domínio (aplicação)**:
 
 - **Unidirecional:** apenas uma entidade conhece a outra.
-    - Ex: **`Estudante`** armazena uma referência de **`Notebook`**, porém **`Notebook`**não armazena a referencia a **`Estudante`**
+    - Ex: **`Estudante`** armazena uma referência de **`Notebook`**, porém **`Notebook`** não armazena a referencia a **`Estudante`**
 
 - **Bidirecional:** ambas as entidades conhecem e mantêm referência uma à outra.
     - Ex: **`Estudante`** possui referência de **`Notebook`**, e **`Notebook`** possui referência de **`Estudante`**.
 
-**🚨IMPORTANTE:**
+**🚨IMPORTANTE:**  
 
-<aside>
-⚠️
+> ⚠️O conceito de bidirecionalidade **NÃO existe no contexto de Banco de Dados,** a direção do relacionamento é sempre de **quem tem a foreign key (FK) para quem ela aponta** (quem possui a FK conhece o outro lado da relação).  
 
-O conceito de bidirecionalidade **NÃO existe no contexto de Banco de Dados,** a direção do relacionamento é sempre de **quem tem a foreign key (FK) para quem ela aponta** (quem possui a FK conhece o outro lado da relação).
+> A **Direcionalidade** é possível apenas no escopo da **camada de domínio (aplicação)**, sendo utilizada principalmente para **navegação e consultas entre Entidades**, permitindo acessar informações da primeira Entidade a partir da segunda e vice-versa.
 
-A **Direcionalidade** é possível apenas no escopo da **camada de domínio (aplicação)**, sendo utilizada principalmente para **navegação e consultas entre Entidades**, permitindo acessar informações da primeira Entidade a partir da segunda e vice-versa.
 
-</aside>
 
 ### Bidirecionalidade e lado proprietário da relação:
 
-Sempre que criamos um **relacionamento Bidirecional**, devemos definir qual **o lado proprietário da relação** (lado responsável por realizar o mapeamento), caso contrário será gerado **redundâncias no mapeamento** (mais de uma referencia de relacionamento). Para isso, usamos o atributo `mappedBy`.
+Sempre que criamos um **relacionamento Bidirecional**, devemos definir qual **o lado proprietário da relação** (lado que possui a FK e fica responsável por realizar o mapeamento), caso contrário será gerado **redundâncias no mapeamento** (mais de uma referencia de relacionamento). Para isso, usamos o atributo `mappedBy`.
 
 ### `mappedBy`:
 
@@ -393,15 +361,12 @@ Por exemplo:
 
 No relacionamento entre Estudante e Notebook, o **lado proprietário** é o **Notebook** (é quem armazena a FK e fica responsável pelo mapeamento), então dentro de Estudante será usado o `mappedBy` para referenciar o lado dominante (Notebook).
 
-PS: colocar exemplo de relacionamento unidirecional e bidirecional
-
- 
 
 Para realizar o Mapeamento de cada cenário possível, utilizamos annotations específicas fornecidas pelo JPA:
 
 ## Relacionamento 1:1:
 
----
+
 
 Para esse relacionamento temos a annotation `@OneToOne`. Então basta que o **atributo que representa o relacionamento seja anotado com** `@OneToOne`.
 
@@ -446,21 +411,14 @@ public class Notebook {
 
 As boas práticas de **definição de FK** dizem que em um relacionamento **1:1**:
 
-| 
-Situação:
- | 
-Exemplo: | 
-Lado que a **FK** deve ficar: |
+| Situação: | Exemplo: | Lado que a **FK** deve ficar: |
 | --- | --- | --- |
-| Se não houver obrigatoriedade em nenhum dos lados **OU** 
-Se houver nos dois lados | **(0:1**) —🔸— (**0:1)
-          OU
-(1:1**) —🔸— (1**:1)** | Em qualquer um dos lados (de preferência no que faça sentido contextualmente) |
+| Se não houver obrigatoriedade em nenhum dos lados **OU** Se houver nos dois lados | (**0:1**) —🔸— (**0:1**)          OU    (**1:1**) —🔸— (**1:1**) | Em qualquer um dos lados (de preferência no que faça sentido contextualmente) |
 | Se houver obrigatoriedade em um dos lados | (**1:1**) —🔸— (**0:1**) | No lado que é obrigado a se relacionar |
 
 ## Relacionamento **N:N**:
 
----
+
 
 Para esse relacionamento temos a annotation `@ManyToMany`. Então basta que o atributo que representa o relacionamento seja anotado com `@ManyToMany`.
 
@@ -505,23 +463,13 @@ public class Notebook {
 
 Boas práticas para a definição da FK em relacionamentos **N:N**:
 
-| 
-**Situação:**
- | 
-**Exemplo:** | 
-**Lado que a FK deve ficar:** |
+| **Situação:** | **Exemplo:** | **Lado que a FK deve ficar:** |
 | --- | --- | --- |
-| Independente se houver obrigatoriedade ou não | **(0:N**) —🔸— (**0:N)
-          OU
-(1:N**) —🔸— (1**:N)
-          OU
-(0:N**) —🔸— (1**:N)** | Pode ser adicionado em **qualquer lado (de preferencia no que faça sentido contextual)**
-
-O Hibernate irá criar uma **tabela associativa** que servira apenas **para armazenar as chaves (FK) de ambas as Entidades** |
+| Independente se houver obrigatoriedade ou não | (**0:N**) —🔸— (**0:N**)          OU (**1:N**) —🔸— (**1:N**)          OU (**0:N**) —🔸— (**1:N**) | O `mappedBy` pode ser adicionado em **qualquer lado (de preferencia no que faça sentido contextual)**. O Hibernate irá criar uma **tabela associativa** que servira apenas **para armazenar as chaves (FK) de ambas as Entidades** |
 
 ## Relacionamento 1:N:
 
----
+
 
 Para esse relacionamento temos as annotations `@OneToMany` e `@ManyToOne`. No caso do relacionamento **1:N**, temos que nos atentar a **perspectiva** de cada lado do relacionamento para **usarmos as annotations de forma certa**.
 
@@ -529,12 +477,9 @@ Por exemplo, digamos que **um Estudante possa ter N Notebooks e um Notebook pert
 
 Ponto de vista de Estudante:
 
-<aside>
-🧠
+> 🧠1 Estudante para N Notebooks → **`@OneToMany`**
 
-1 Estudante para N Notebooks → **`@OneToMany`**
 
-</aside>
 
 ```java
 @Entity
@@ -550,12 +495,8 @@ public class Estudante{
 
 Ponto de vista de Notebook (inverso de Estudante):
 
-<aside>
-🧠
+>🧠 N Notebooks para 1 Estudante → **`@ManyToOne`**
 
-N Notebooks para 1 Estudante → **`@ManyToOne`**
-
-</aside>
 
 ```java
 @Entity
@@ -571,23 +512,11 @@ public class Notebook { //lado proprietário
 
 Boas práticas para a definição da FK em relacionamentos **1:N**:
 
-| 
-Situação:
- | 
-Exemplo: | 
-Lado que a **FK** deve ficar: |
+| Situação: | Exemplo: | Lado que a **FK** deve ficar: |
 | --- | --- | --- |
-| Independente se houver obrigatoriedade ou não | **(0:1**) —🔸— (**0:N)
-          OU
-(1:1**) —🔸— (1**:N)
-          OU
-(0:1**) —🔸— (1**:N)** | No lado **N** da relação |
+| Independente se houver obrigatoriedade ou não | (**0:1**) —🔸— (**0:N**)          OU (**1:1**) —🔸— (**1:N**)          OU (**0:1**) —🔸— (**1:N**) | No lado **N** da relação |
 
-| mappedBy | indica quem está realizando o **mapeamento**. Qual o **lado proprietário da Chave Estrangeira (lado dominante)** | `@OneToMany`
-`@ManyToMany` |
-| --- | --- | --- |
-|  |  |  |
-|  |  |  |
+
 
 ---
 
@@ -595,7 +524,7 @@ Lado que a **FK** deve ficar: |
 
 Quando temos relacionamentos no JPA/Hibernate (`@OneToMany`, `@ManyToOne`, `@OneToOne`, `@ManyToMany`), existem duas formas de principais de carregar os dados:
 
-### Lazy (`FetchType.*LAZY*`)
+### Lazy (`FetchType.LAZY`)
 
 Carrega apenas os dados da entidade principal, os **dados relacionados** (dados da entidade que se relaciona com a entidade principal) só são carregados **quando você realmente acessa o relacionamento** no código.
 
@@ -613,7 +542,7 @@ Carrega apenas os dados da entidade principal, os **dados relacionados** (dados 
 
 - Pode causar **`LazyInitializationException`** se você acessar o relacionamento **fora da sessão** (por exemplo, depois de fechar a transação).
 
-### Eager (`FetchType.*EAGER*`)
+### Eager (`FetchType.EAGER`)
 
 Os dados relacionados **são carregados imediatamente junto com a entidade principal**, independentemente de você usar ou não.
 
@@ -632,14 +561,9 @@ Os dados relacionados **são carregados imediatamente junto com a entidade princ
 - Pode causar **queries gigantes** ou **N+1 problem**.
 - Prejudica performance se não for usado com cuidado.
 
-🚨IMPORTANTE:
+🚨IMPORTANTE:  
+> ⚠️Cada annotation possui um tipo de carregamento **padrão** caso não seja especificado
 
-<aside>
-⚠️
-
-Cada annotation possui um tipo de carregamento **padrão** caso não seja especificado
-
-</aside>
 
 | **Annotation** | **Padrão JPA** | **Padrão Hibernate** |
 | --- | --- | --- |
@@ -709,177 +633,142 @@ São os mesmos passos para o cache L2.
 
 ---
 
+
+
 ## HQL (Hibernate Query Language:
 
 Definição:
 
-é uma **linguagem de consulta orientada a objetos usada pelo framework Hibernate para interagir com bancos de dados.**
+É uma **linguagem de consulta orientada a objetos usada pelo framework Hibernate para interagir com bancos de dados.**
 
-Derivada do SQL, porém trabalha com os objetos Java e seus atributos ao invés de tabelas e colunas do banco. 
-
-Permite manipular dados de forma mais intuitiva, utilizando conceitos como herança, polimorfismo e associações. 
-
-Consultas HQL são convertidas pelo Hibernate em consultas SQL nativas, facilitando a migração entre diferentes bancos de dados. 
+Derivada do SQL, porém trabalha com os objetos Java e seus atributos ao invés de tabelas e colunas do banco. Permite manipular dados de forma mais intuitiva, utilizando conceitos como herança, polimorfismo e associações. Consultas HQL são convertidas pelo Hibernate em consultas SQL nativas, facilitando a migração entre diferentes bancos de dados. 
 
 Características:
 
 - Possui mais recursos que a JPQL porém a aplicação fica “presa” ao Hibernate
 
-## JPQL (Java Persistence Query Language)
+## CRUD com HQL:
 
-**Linguagem de consulta orientada a objetos usada para interagir com bancos de dados relacionais dentro de aplicações Java que utilizam a Java Persistence API (JPA)** .
-
-**Vantagens em em comparação ao HQL:**
-
-- Oferece portabilidade a outros frameworks ORM
-- Mais utilizada no mercado por conta da portabilidade
-
-**Desvantagens:**
-
-- Oferece menos recursos do que o HQL
-
-### Características:
-
-**Orientada a objetos:**
-
-Permite consultar dados usando nomes de classes (entidades) e propriedades de objetos, em vez de nomes de tabelas e colunas
-
-**Baseada no SQL:**
-
-Embora orientada a objetos, a JPQL mantém uma sintaxe e estrutura semelhantes ao SQL, facilitando a transição de desenvolvedores familiarizados com SQL
-
-**Parte da JPA:**
-
-A JPQL é definida e faz parte da especificação JPA, um padrão Java para mapeamento objeto-relacional (ORM).
-
-### Primeiro passo para criação de querys JPQL:
-
-Depois de criarmos as nossas Entidades mapeadas (Classe Java com `@Entity` e `@Id`), o primeiro passo é criar uma `EntityManagerFactory`, responsável por fornecer instâncias de `EntityManager`. **É através da `EntityManager` que podemos criar e executar nossas consultas (queries)**.
-
-`EntityManager` x `Session`
-
-- Quando usamos o JPA diretamente, trabalhamos sempre com a `EntityManager`
-- Usando o Hibernate, trabalhamos com a `Session` que faz o mesmo papel
-- Por baixo dos panos, o Hibernate implementa a JPA fazendo com que a `Session` seja uma extensão (ou adaptação) da `EntityManager`
+Supondo a entidade Usuario:  
 
 ```java
-EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("");
-EntityManager entityManager = entityManagerFactory.createEntityManager();
+@Entity
+@Table(name = "usuarios")
+public class Usuario {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String nome;
+    private String email;
+    private int idade;
+
+    // getters e setters
+}
 ```
 
-ou assim:
+🔹 1. CREATE (inserção)
+
+O insert com HQL é mais limitado (não suporta valores literais diretamente), mas pode ser feito copiando dados de outra entidade/tabela.
+O mais comum é usar o próprio `EntityManager`/`Session`:
 
 ```java
-@PersistenceContext
-EntityManager entityManager;
+Usuario u = new Usuario();
+u.setNome("João da Silva");
+u.setEmail("joao@email.com");
+u.setIdade(30);
+
+Session session = sessionFactory.openSession();
+Transaction tx = session.beginTransaction();
+
+session.persist(u);
+
+tx.commit();
+session.close();
 ```
 
-## CRUD com JPQL:
+👉 Normalmente, o `INSERT` em HQL é substituído pelo `session.save()` ou `session.persist()`.
 
-### CREATE
+🔹 2. READ (consulta)  
 
-**O JPQL NÃO suporta INSERT …. VALUES** (diferente de HQL), então a inserção de dados **acontece de forma “direta”, através do método `persist()`**.
-
-Vale lembrar que por ser uma Manipulação de dados, é recomendado criar uma `Transaction`:
+Buscar todos os usuários:  
 
 ```java
-EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("");
-EntityManager entityManager = entityManagerFactory.createEntityManager();
-
-Student student = new Student(1L, "Alessandro", 22);
-
-EntityTransaction transaction = entityManager.getTransaction(); //Cria uma transaction
-transaction.begin(); //Inicia a Transação
-
-entityManager.persist(student); //Realiza a inserção do dado
-
-transaction.commit() //Confirma a transação
+String hql = "FROM Usuario";
+List<Usuario> usuarios = session.createQuery(hql, Usuario.class).list();
 ```
-
-### READ
-
-**Buscar todos:**
-
-Para buscar todos os registros de uma Entidade, usamos a seguinte sintaxe:
+Buscar com condição:  
 
 ```java
-TypedQuery<Student> query = entityManager.createQuery("SELECT s FROM Student s", Student.class);
-
-List<Student> students = query.getResultList();
+String hql = "FROM Usuario u WHERE u.idade > :idadeMinima";
+List<Usuario> usuarios = session.createQuery(hql, Usuario.class)
+                                .setParameter("idadeMinima", 18)
+                                .list();
 ```
 
-📌Neste código:
-
-- `createQuery(String query, Myclass.class)` → método usado para criar as querys JPQL, retorna um objeto do tipo `TypedQuery<Myclass>`, já com o tipo esperado (`Student` seguindo o exemplo), sem necessidade de *cast* manual.
-- `Student` → **nome da entidade**, não da tabela.
-- `s` → um **alias** (**apelido temporário** atribuído a colunas ou tabelas em uma consulta), como no SQL.
-- `getResultList()` → método usado para executar a query, quando se **espera uma lista de resultados**, retorna um `List<T>` do tipo que foi declarado na criação da query (no caso `Student`).
-
-**Buscar por parâmetros:**
-
-Para realizar a busca de algum registro por parâmetro, usamos a seguinte sintaxe:
-
-Parâmetro nomeado 
+Buscar apenas alguns campos (projeção):  
 
 ```java
-TypedQuery<Student> query = entityManager.createQuery("SELECT s FROM Student s WHERE s.id = :id");
+String hql = "SELECT u.nome, u.email FROM Usuario u";
+List<Object[]> resultado = session.createQuery(hql).list();
 
-query.setParameter("id",3L); //recebe o nome do parâmetro e o valor que ele terá
-
-Student student = query.getSigleResult();
+for(Object[] row : resultado) {
+    System.out.println("Nome: " + row[0] + ", Email: " + row[1]);
+}
 ```
+⚠ OBSERVAÇÃO:
+> JPA (EntityManager) → usa getResultList() e getSingleResult().
+>
+> Hibernate (Session) → usa list() e uniqueResult() (ou uniqueResultOptional()).
 
-Parâmetro posicional
+
+🔹 3. UPDATE (atualização)  
 
 ```java
-TypedQuery<Student> query = entityManager.createQuery("SELECT s FROM Student s WHERE s.name = ?1");
+String hql = "UPDATE Usuario u SET u.email = :novoEmail WHERE u.nome = :nome";
+int rowsAffected = session.createQuery(hql)
+                          .setParameter("novoEmail", "novo@email.com")
+                          .setParameter("nome", "João da Silva")
+                          .executeUpdate();
 
-query.setParameter(1,"Maria"); //recebe o número do parâmetro e o valor que ele terá
-
-List<Student> students = query.getResultList();
+System.out.println("Registros atualizados: " + rowsAffected);
 ```
 
-📌Nestes códigos:
-
-- `s.id` e `s.name` → **atributos da entidade**, não colunas do banco.
-- `:id` → prefixo usado para criar um parâmetro nomeado (`:nomeDoParâmetro`)
-- `?1` → prefixo usado para criar um parâmetro posicional (`?n`, `n` sendo um número ordinal que começa em 1)
-- `setParameter()` → **método usado para *settar* valores nos parâmetros**.
-- `getSingleResult()` → usado para executar a query, **quando se espera apenas um resultado**, **retorna 1 objeto do tipo declarado na query** (ou erro se não encontrar).
-
-### UPDATE
-
-O JPQL **permite atualizar vários registros de uma vez (sem precisar carregar entidades na memória)**. Funciona da mesma forma que o READ, mudando apenas a sintaxe da *query*:
+🔹 4. DELETE (remoção)  
 
 ```java
-TypedQuery<Student> query = entityManager.createQuery("UPDATE Student s SET s.name= :name WHERE s.id = :id");
-query.setParameter("name", "novoNome");
-query.setParameter("id", 1L);
+String hql = "DELETE FROM Usuario u WHERE u.id = :idUsuario";
+int rowsAffected = session.createQuery(hql)
+                          .setParameter("idUsuario", 1L)
+                          .executeUpdate();
 
-int registrosAfetados = query.executeUpdate();
+System.out.println("Registros removidos: " + rowsAffected);
 ```
 
-📌Neste código:
+⚡ Resumindo:
 
-- `executeUpdate()` → executa uma query de modificação direta no banco, **retorna a quantidade de registros (linhas) que foram afetadas**, mas não atualiza automaticamente os objetos já carregados no `EntityManager` (Entidades buscadas pelo método `find()`).
+**Create** → via `session.save()` / `session.persist()`  
+**Read** → `FROM Entidade` com filtros (`WHERE`, `ORDER BY`, etc.)  
+**Update** → `UPDATE Entidade SET campo = valor`  
+**Delete** → `DELETE FROM Entidade WHERE condição`    
 
-### DELETE:
 
-Assim como no Update, podemos excluir em massa:
 
-```java
-TypedQuery<Student> query = entityManager.createQuery("DELETE FROM Student s WHERE s.id = :id");
-query.setParameter("id", 2L);
+> **DICIONÁRIO:**
+>
+> ***Mapeamento**: É o **processo de associar** os **atributos de uma classe Java** aos **campos de uma tabela no banco de dados.***
+> 
+> ***EntityManager**: Interface fornecida pela especificação JPA que fica responsável por gerenciar as entidades além de permitir executar operações CRUD e queries dentro de um contexto de persistência.*
+> 
+> ***Transação**: é um **conjunto de operações que são tratadas como uma única unidade de trabalho.** Isso significa que todas as operações dentro da transação devem ser executadas com sucesso para que a transação seja confirmada (commit), caso contrário, todas as operações devem ser desfeitas (rollback), retornando o sistema ao seu estado anterior.***
+> 
+> ***Camada de domínio**: **é uma camada opcional que fica entre a interface do usuário e a camada de dados, e é responsável por encapsular a lógica de negócios (aplicação)***
 
-int registrosExcluidos = query.executeUpdate();
-```
 
-**DICIONÁRIO:**
 
-***Mapeamento**: “É o **processo de associar** os **atributos de uma classe Java** aos **campos de uma tabela no banco de dados**.”*
 
-***EntityManager**: Interface fornecida pela especificação JPA que fica responsável por gerenciar as entidades além de permitir executar operações CRUD e queries dentro de um contexto de persistência.*
 
-***Transação**: é um **conjunto de operações que são tratadas como uma única unidade de trabalho.** Isso significa que todas as operações dentro da transação devem ser executadas com sucesso para que a transação seja confirmada (commit), caso contrário, todas as operações devem ser desfeitas (rollback), retornando o sistema ao seu estado anterior.
 
-**Camada de domínio**: **é uma camada opcional que fica entre a interface do usuário e a camada de dados, e é responsável por encapsular a lógica de negócios (aplicação)***
+
+
+
