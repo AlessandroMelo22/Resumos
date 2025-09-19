@@ -1,5 +1,8 @@
 # Beans 
  
+
+> ⚠Este diretório explica Beans no contexto de IoC/DI. Para detalhes técnicos do módulo spring-beans, consulte também
+
 ## O que é um Bean?  
 
 **Objeto gerenciado pelo _Spring Container_**. Os conceitos de Inverção de Controle e Injeção de Dependências do _Spring Framework_ são aplicados apenas em objetos gerenciados pelo _Spring Container_, ou seja, em _Beans_.  
