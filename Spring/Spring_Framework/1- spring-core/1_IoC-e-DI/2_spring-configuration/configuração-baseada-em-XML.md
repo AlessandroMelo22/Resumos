@@ -57,7 +57,7 @@ public class Customer{
 ## 2️⃣ Definição dos metadados em XML:
 
 Agora precisamos **instruir** o Spring, mais precisamente o Container em **como criar e gerenciar esse POJO**. Isso é feito no **arquivo de configuração XML** (geralmente `applicationContext.xml`)**, 
-que deve ser criado dentro de um diretório `/main/resources`**.
+que deve ser criado dentro de um diretório `/main/resources`**.  
 
 ```xml
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -348,7 +348,7 @@ o bean que não está sendo utilizado também será criado toda vez que o Contai
 
 ```xml
 <bean id="customer01" class="com.alessandromelo.entity.Customer">
-			<property name="address" ref="address01"/>
+	<property name="address" ref="address01"/>
 </bean>
 
 <bean id="address01" class="com.alessandromelo.entity.Address">
@@ -362,7 +362,7 @@ Usando o atributo `lazy-init=”true”` na declaração do bean que NÃO está 
 
 ```xml
 <bean id="customer01" class="com.alessandromelo.entity.Customer">
-			<property name="address" ref="address01"/>
+	<property name="address" ref="address01"/>
 </bean>
 
 <bean id="address01" class="com.alessandromelo.entity.Address">
@@ -391,4 +391,20 @@ public class Main {
 > Vale lembrar que o bean ainda continua sendo `Singleton`, o `lazy-init=”true”` altera apenas **QUANDO** o bean será criado.
 
 
+### 🔹Inner Bean:
 
+Dentro da aplicação, podemos ter situações em que teremos objetos (beans) que serão utilizados exclusivamente por um único bean e que não precisarão ser acessados ou reutilizados por outras partes da aplicação.  
+
+Por isso, existe o conceito de Inner bean (bean interno), que como o nome sugere, se trata de um bean declarado dentro da definição de outro bean, ou seja, aninhado no XML.  
+
+Ele é criado apenas para ser usado por aquele bean específico e não é registrado no `ApplicationContext` como um bean independente.
+
+```xml
+<bean id="customer01" class="com.exemplo.Customer">
+    <property name="address">
+        <bean class="com.exemplo.Address"/>
+    </property>
+
+</bean>
+
+```
