@@ -1,5 +1,16 @@
 # Configuração baseada em XML
 
+
+A configuração baseada em XML foi a **primeira forma introduzida pelo Spring para definir o comportamento do container IoC**.
+Nessa abordagem, os beans, suas dependências e escopos são declarados em arquivos `.xml`, geralmente dentro do diretório `resources`.
+Ela separa completamente a **configuração do código-fonte Java**, tornando o container totalmente configurável sem precisar alterar o código da aplicação.  
+
+Embora hoje seja **menos usada**, continua sendo suportada e é fundamental para entender as **raízes do Spring e o funcionamento interno do contêiner**.
+
+
+
+# Exemplo de como trabalhar com configuração baseada em XML
+
 ## 1️⃣ Criação do nosso POJO:
 
 Como primeiro passo, devemos criar nosso classe POJO, então suponhamos que temos uma classe `Customer`:
@@ -408,3 +419,4 @@ Ele é criado apenas para ser usado por aquele bean específico e não é regist
 </bean>
 
 ```
+
