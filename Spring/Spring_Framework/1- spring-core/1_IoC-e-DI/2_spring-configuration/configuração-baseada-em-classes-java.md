@@ -3,17 +3,22 @@
 A configuração baseada em classe Java surgiu como uma **alternativa moderna e mais intuitiva à configuração XML**.
 Em vez de definir beans em arquivos `.xml`, o desenvolvedor usa classes Java anotadas com `@Configuration` e métodos com `@Bean` para **declarar os componentes que o Spring deve gerenciar**.  
 
-Essa abordagem aproveita os recursos da linguagem Java (tipagem forte, refatoração, autocompletar) e mantém a configuração próxima ao código, sem perder o controle explícito sobre os beans.  
-**É a abordagem mais usada atualmente fora do Spring Boot**.  
+ Essa abordagem trouxe tipagem forte e maior legibilidade, permitindo configurar o container usando a própria linguagem Java.
+
+> [!IMPORTANT]
+> **Você ainda controla explicitamente o que o Spring cria, mas de forma mais moderna e enxuta.**
+>
+> **É a abordagem mais usada atualmente fora do Spring Boot**.
 
 
 
-Pontos positivos de utilizar esse tipo de configuração:  
+
+**Pontos positivos de utilizar esse tipo de configuração:**  
 ✔ Maior controle da criação e gerenciamento dos beans (possibilidade de passar parâmetros ou settar valores por exemplo)  
 ✔ Substitui completamente o XML com mais clareza  
 ✔ Integra-se melhor ao código moderno Java
 
-Pontos negativos:  
+**Pontos negativos:**  
 ❌ Ainda exige certo código repetitivo em projetos grandes  
 ❌ Pode se misturar com código de aplicação se mal estruturado
 
@@ -27,8 +32,8 @@ Para os exemplos, imaginemos que temos um POJO do tipo `Desktop`:
 ```java
 public class Desktop implements Computer {
 
-		private String brand;
-		private String ram;
+	private String brand;
+	private String ram;
 
     public Desktop() {
         
@@ -88,14 +93,14 @@ public class AppConfig {
 ```java
 public class Main {
     public static void main(String[] args) {
-				//Cria um container ApplicationContext e passa a classe @Configuration com toda a configuração
+		//Cria um container ApplicationContext e passa a classe @Configuration com toda a configuração
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class); 
 
-				//Recupera o bean
+		//Recupera o bean
         Desktop desktop01 = applicationContext.getBean(Desktop.class);
 				
-				//Usa o bean
-				desktop01.compile();
+		//Usa o bean
+		desktop01.compile();
     }
 }
 ```
@@ -247,7 +252,7 @@ Trabalhando com configuração baseada em classes Java podemos usar duas anotaç
 Anotamos no método criador do bean indicando que aquele bean é o bean padrão quando houver vários beans do mesmo tipo:
 
 ```java
-		@Bean(name = {"student01", "std01"})
+	@Bean(name = {"student01", "std01"})
     public Student createStudent(Computer computer){
 
         Student student= new Student("Alessandro", computer);
@@ -270,7 +275,7 @@ Anotamos no método criador do bean indicando que aquele bean é o bean padrão 
 
 Anotamos o **ponto de injeção do bean**, passando o nome do bean (da implementação) que deverá ser injetada. Basicamente definimos explicitamente **qual implementação do bean deverá ser injetado**:
 ```java
-		@Bean(name = {"student01", "std01"})
+	@Bean(name = {"student01", "std01"})
     public Student createStudent(@Qualifier("notebook01") Computer computer){ //Anotando o ponto de injeção com @Qualifier e passando o nome da implementação
         Student student= new Student("Alessandro", computer);
         return student;
@@ -286,3 +291,4 @@ Anotamos o **ponto de injeção do bean**, passando o nome do bean (da implement
         return new Notebook();
     }
 ```
+
