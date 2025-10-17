@@ -8,7 +8,7 @@ Em vez de definir beans em arquivos `.xml`, o desenvolvedor usa classes Java ano
 > [!IMPORTANT]
 > **Você ainda controla explicitamente o que o Spring cria, mas de forma mais moderna e enxuta.**
 >
-> **É a abordagem mais usada atualmente fora do Spring Boot**.
+> **Essa abordagem normalmente é utilizada junto com a configuração baseada em Anotações (`@ComponetScan` + `@Component`, `@Service`, `@Controller`,...) - elas se completam**.
 
 
 
@@ -291,4 +291,5 @@ Anotamos o **ponto de injeção do bean**, passando o nome do bean (da implement
         return new Notebook();
     }
 ```
+
 
