@@ -80,8 +80,6 @@ O Spring fornece diversas **anotações de estereótipo**, utilizadas para **ind
 
 `@Entity` → embora pertença ao JPA, e não diretamente ao Spring, também marca classes que representam entidades persistentes no banco de dados.
 
-
-Ver se compensa colocar o código aqui ou la em baixo
 **Exemplo prático**
 ```java
 @Component
@@ -105,52 +103,33 @@ public class Desktop implements Computer {
     // Getters e Setters...
 }
 ```
+👉 Nesse exemplo, a classe `Desktop` foi anotada com `@Component`. Isso significa que, durante o processo de escaneamento de componentes, o Spring **detectará automaticamente essa classe e criará uma instância (bean) dela no contexto da aplicação**.
 
 
 
-### 🔹Como o Spring descobre essas classes
+## 3️⃣ Ativando o Escaneamento dos Componentes
 
-Para que o Spring possa **criar automaticamente os beans a partir dessas anotações**, é necessário **habilitar o escaneamento de componentes (_component scanning_)**, geralmente feito em uma **classe de configuração**:
+Para que o Spring possa **criar automaticamente os beans a partir dessas anotações**, é necessário **habilitar o escaneamento de componentes (_component scanning_)**, geralmente feito em uma **classe de configuração** (classe `@Configuration`):
 
 ```java
 @Configuration
 @ComponentScan(basePackages = "com.exemplo")
 public class AppConfig {
 }
- 
 ```
 
+👉 Com isso, o Spring passará a **varrer os pacotes especificados e registrar automaticamente todas as classes anotadas com `@Component` (e suas variações) no contêiner IoC**.
 
-Com isso, o Spring passará a **varrer os pacotes especificados e registrar automaticamente todas as classes anotadas com `@Component` (e suas variações) no contêiner IoC**.
 
-**Exemplo prático**
-```java
-@Component
-public class Desktop implements Computer {
+## 4️⃣ Outras anotações utilizadas na configuração baseada em anotações
 
-    private String brand;
-    private String ram;
 
-    public Desktop() {}
 
-    public Desktop(String brand, String ram) {
-        this.brand = brand;
-        this.ram = ram;
-    }
 
-    @Override
-    public void compile() {
-        System.out.println("Compiling using Desktop...");
-    }
 
-    // Getters e Setters...
-}
-```
 
-Nesse exemplo, a classe Desktop foi anotada com @Component.
-Isso significa que, durante o processo de escaneamento de componentes, o Spring detectará automaticamente essa classe e criará uma instância (bean) dela no contexto da aplicação.
-
-Conectando com a configuração baseada em classe Java
+## Conectando com a configuração baseada em classe Java
 
 As anotações de estereótipo fazem parte da configuração baseada em anotações, mas dependem da configuração baseada em classe Java para funcionarem.
 Ou seja, o escaneamento (@ComponentScan) precisa ser ativado dentro de uma classe @Configuration para que o Spring possa localizar e registrar esses beans automaticamente.
+
