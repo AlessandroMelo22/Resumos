@@ -24,24 +24,25 @@ ou seja, **funcionalidades que afetam (aparecem) várias partes do sistema**.
 |----------|-----------|
 | **Aspect** |	Um módulo (classe) que **encapsula uma lógica transversal (ex: um logger, um validador, etc.)** |
 | **Join Point** |	Um **ponto de execução do programa** (ex: chamada de método, inicialização de objeto) onde um aspecto pode ser aplicado |
-| **Advice** |	O que o aspecto faz — o código a ser executado no join point |
+| **Advice** |	O que o aspecto faz — o **código (método) a ser executado no Join Point** |
 | **Pointcut** |	Uma **expressão** que define onde (em quais métodos/pacotes/classe) o **advice deve ser aplicado** |
 | **Weaving** |	O **processo de "injetar" o aspecto no código (em tempo de compilação, carga ou execução)** |
 
 
-🧩 3. Tipos de Advice no Spring AOP
+## 3️⃣ Tipos de Advice no Spring AOP
 
 O Spring oferece vários tipos de Advice, que definem quando o código do aspecto roda:
 
-Tipo de Advice	Quando é executado	Exemplo
-@Before	Antes da execução do método alvo	Verificar autenticação antes de um método do controller
-@After	Após a execução (sucesso ou falha)	Liberar recursos
-@AfterReturning	Após execução bem-sucedida	Logar o retorno do método
-@AfterThrowing	Quando o método lança exceção	Tratar e registrar exceções
-@Around	Antes e depois — controla a execução	Medir tempo de execução ou modificar o retorno
+| Tipo de Advice | Quando é executado | Exemplo |
+|----------------|--------------------|---------| 
+| **`@Before`** |	Antes da execução do método alvo |	Verificar autenticação antes de um método do controller |
+| **`@After`** | Após a execução (sucesso ou falha) |	Liberar recursos |
+| **`@AfterReturning`** |	Após execução bem-sucedida | Logar o retorno do método |
+| **`@AfterThrowing`** |	Quando o método lança exceção |	Tratar e registrar exceções |
+| **`@Around`** |	Antes e depois — controla a execução |	Medir tempo de execução ou modificar o retorno |
 
 
-4. Exemplo Prático de AOP com Spring
+### Exemplo Prático de AOP com Spring
 ```java
 @Aspect
 @Component
@@ -64,13 +65,13 @@ public class LoggingAspect {
 
 🧠 O que acontece aqui:
 
-- O @Aspect define que a classe é um aspecto.
-- O @Pointcut seleciona todos os métodos dentro de com.seuprojeto.service.
-- O @Before e @AfterReturning aplicam a lógica de log antes e depois da execução desses métodos.
+- O `@Aspect` define que a classe é um aspecto.
+- O `@Pointcut` seleciona todos os métodos dentro de `com.seuprojeto.service`.
+- O `@Before` e `@AfterReturning` aplicam a lógica de log **antes e depois da execução desses métodos**.
 
 
 
-🧩 5. Habilitando AOP no Spring
+## 4️⃣ Habilitando AOP no Spring
 
 Adicione a anotação no seu arquivo de configuração principal:
 ```java
@@ -82,3 +83,4 @@ public class App {
     }
 }
 ```
+
