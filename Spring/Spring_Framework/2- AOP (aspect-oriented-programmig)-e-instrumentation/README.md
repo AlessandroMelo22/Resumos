@@ -29,7 +29,16 @@ ou seja, **funcionalidades que afetam (aparecem) várias partes do sistema**.
 | **Weaving** |	O **processo de "injetar" o aspecto no código (em tempo de compilação, carga ou execução)** |
 
 
-## 3️⃣ Tipos de Advice no Spring AOP
+
+## 3️⃣ AOP e Proxies
+
+No Spring, a implementação de AOP acontece principalmente **através de _proxies_**.  
+O **proxy** é um objeto gerado pelo framework que **encapsula o objeto real e intercepta as chamadas de métodos**.  
+
+👉 Isso significa que quando você marca um método como alvo de AOP, o Spring **cria um proxy para “envolver” esse método com o advice**.
+
+
+## 4️⃣ Tipos de Advice no Spring AOP
 
 O Spring oferece vários tipos de Advice, que definem quando o código do aspecto roda:
 
@@ -71,7 +80,7 @@ public class LoggingAspect {
 
 
 
-## 4️⃣ Habilitando AOP no Spring
+## 5️⃣ Habilitando AOP no Spring
 
 Adicione a anotação no seu arquivo de configuração principal:
 ```java
@@ -83,4 +92,5 @@ public class App {
     }
 }
 ```
+
 
