@@ -17,7 +17,7 @@ Ou seja:
 Basicamente funciona da seguinte forma:  
 Dentro do `try` fica o **bloco de código que pode gerar uma Exception**, enquanto o `catch` **fica responsável por capturar e tratar essa Exception**:
 
-```  
+```java  
 try {
 
   //BLOCO DE CÓDIGO QUE É MONITORADO PARA ERROS
@@ -34,7 +34,7 @@ try {
 ### 🔸Múltiplos `catch`  
 Funciona da mesma forma que o `try catch` convencional porém **é utilizado quando um bloco de código pode gerar mais de uma Exception**:
 
-```
+```java
 try {
 
   //BLOCO DE CÓDIGO QUE É MONITORADO PARA ERROS
@@ -56,7 +56,7 @@ try {
 
 Quando temos que tratar **Exceptions que pertencem a mesma família**, ao invés de utilizar vários blocos `catch` seguidos, podemos utilizar apenas um bloco `catch` e declarar todas as Exceptions seguindo a seguinte sintaxe:  
 
-```
+```java
 try {
 
   //BLOCO DE CÓDIGO QUE É MONITORADO PARA ERROS
@@ -73,7 +73,7 @@ try {
 
 O bloco `finally` em Java **é usado para garantir que um determinado bloco de código seja executado, independentemente de ocorrer uma exceção ou não dentro do bloco** `try`. É frequentemente **utilizado para liberar recursos, como fechar arquivos ou conexões de banco de dados**, garantindo que esses recursos sejam sempre liberados, mesmo que ocorra um erro:
 
-```  
+```java  
 try {
 
   //BLOCO DE CÓDIGO QUE É MONITORADO PARA ERROS
@@ -88,9 +88,10 @@ try {
 
 }
 ```
-⚠**OBSERVAÇÃO:** Como foi mencionado, o bloco `finally` é executado SEMPRE, mesmo se houver um erro ou não, porém a uma exceção, caso seja passado o método `System.exit(int status)` dentro do bloco `catch`, e o mesmo for executado, **o bloco `finally` e qualquer coisa que esteja depois não serão executados**:  
+> [!WARNING]
+> **OBSERVAÇÃO:** Como foi mencionado, o bloco `finally` é executado SEMPRE, mesmo se houver um erro ou não, porém a uma exceção, caso seja passado o método `System.exit(int status)` dentro do bloco `catch`, e o mesmo for executado, **o bloco `finally` e qualquer coisa que esteja depois não serão executados**:
 
-```
+```java
 try {
 
   //BLOCO DE CÓDIGO QUE IRÁ GERAR UM ERRO
@@ -107,7 +108,6 @@ try {
 }
 
 System.out.println("ESSE COMANDO NUNCA SERÁ EXECUTADO");
-
 ```
 ---
 ### 🛠Métodos da super classe `Throwable` utilizados no tratamento de Exceptions:  
@@ -124,7 +124,7 @@ Benefícios:
 - Evita vazamento de recursos, quando o programador esquece de fechá-lo ou não trata corretamente uma situação excepcional.
 - Menos propenso a erros de codificação, quando o programador não sabe ou esquece de executar todo o tratamento necessário.
 
-```
+```java
 try (BufferedReader br = new BufferedReader(new FileReader("arquivo.txt"))) {
     String line;
     while ((line = br.readLine()) != null) {
@@ -141,7 +141,7 @@ try (BufferedReader br = new BufferedReader(new FileReader("arquivo.txt"))) {
 
 A palavra-chave `throws` é **usada na declaração de um método para indicar que esse método pode lançar uma ou mais exceções**. Em outras palavras, **ela informa ao código que chama esse método que ele deve estar preparado para lidar com a possibilidade de uma exceção ocorrer durante a execução do método**:
 
-```
+```java
 public void lerArquivo() throws IOException {
     // código que pode lançar IOException
 }
@@ -154,7 +154,7 @@ Quando um método realiza a chamada de um método que possui o `throws` o compil
 
 #### 1️⃣ Tratar aquela possível Exception utilizando o `try-catch`:
 
-```
+```java
 public class Exemplo {
 
     public void metodoComThrows() throws IOException {
@@ -174,7 +174,7 @@ public class Exemplo {
 
 #### 2️⃣ Usar `throws` no próprio método chamador, repassando a responsabilidade para outro método na pilha de chamadas:  
 
-```
+```java
 public class Exemplo {
     public void metodoComThrows() throws IOException {
         // código que pode lançar IOException
@@ -185,10 +185,12 @@ public class Exemplo {
     }
 }
 ```
-⚠**OBSERVAÇÃO:** Vale lembrar que quando um método declara que pode lançar uma **Checked Exception** com `throws`, o método chamador é **OBRIGADO à tratar (utilizando `try-catch`) ou propagar (utilizando também o `throws`)**.
+> [!WARNING]
+> ⚠**OBSERVAÇÃO:** Vale lembrar que quando um método declara que pode lançar uma **Checked Exception** com `throws`, o método chamador é **OBRIGADO à tratar (utilizando `try-catch`) ou propagar (utilizando também o `throws`)**.
+
 
 Checked Exception:  
-```
+```java
 public void metodoComChecked() throws IOException {
     throw new IOException("Erro de IO");
 }
@@ -199,7 +201,7 @@ public void metodoChamador() throws IOException {
 ```
 
 Unchecked Exception:
-```
+```java
 public void metodoComUnchecked() throws IllegalArgumentException {
     throw new IllegalArgumentException("Erro de argumento");
 }
