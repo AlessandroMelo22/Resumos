@@ -22,7 +22,7 @@ Exemplos de Checked Exceptions:
 
 Exemplo de código:  
 
-```
+```java
 public void carregarArquivo(String caminho) throws FileNotFoundException {
     File file = new File(caminho);
     Scanner sc = new Scanner(file); // Pode lançar FileNotFoundException
@@ -51,7 +51,7 @@ Exemplo de Unchecked Exceptions:
 ⚠ Esses erros não deveriam acontecer se o código estivesse certo. Logo, não faz sentido forçar tratamento, por isso são **"inrrecuperáveis"**.
 
 Exemplo de código:
-```
+```java
 public void imprimirNome(String nome) {
     System.out.println(nome.toUpperCase()); // Pode lançar NullPointerException
 }
@@ -75,14 +75,14 @@ Basicamente podemos criar tipos de exceções específicas para condições de e
 - **Flexibilidade** ➡ Permitem tratar erros de forma diferente dependendo do contexto da aplicação. 
 - **Padronização de mensagens** ➡ Permitem padronizar mensagens de erro para a aplicação, garantindo consistência.
 
-```
+```java
 public class SaldoInsuficienteException extends Exception {
     public SaldoInsuficienteException(String message) {
         super(message);
     }
 }
 ```
-```
+```java
 public class Conta {
     private double saldo;
 
