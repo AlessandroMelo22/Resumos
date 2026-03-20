@@ -416,9 +416,7 @@ http.logout(logout -> logout
 
 
 <details>
-<summary><h2>7. Trabalhando com Múltiplos Usuários</h2></summary>
-
-  ### Em memória (para testes e desenvolvimento)
+<summary><h2>7. Autenticação com Usuários em memória (para testes e desenvolvimento)</h2></summary>
 
 Você pode definir múltiplos usuários diretamente no código, sem banco de dados. Ao criar esse Bean, o Spring ignora as configurações do `application.properties`:
 
@@ -451,14 +449,238 @@ public UserDetailsService userDetailsService() {
 
 ---
 <details>
-<summary><h2>Conclusão</h2></summary>
+<summary><h2>8. Autenticação com Usuários do Banco de Dados</h2></summary>
+  
+  <details>
+  <summary><h2>8.1 Visão Geral do Fluxo</h2></summary>
+Quando um usuário tenta se autenticar, o Spring Security executa a seguinte sequência:
 
-  > • O Spring Security protege sua aplicação automaticamente ao ser adicionado, mas a customização via `SecurityFilterChain` é o que você usará no dia a dia  
-• Entender a diferença entre **stateful e stateless** é fundamental para configurar corretamente CSRF, sessão e autenticação  
-• Em APIs REST modernas, o padrão é: **stateless + JWT + CSRF desabilitado + `SessionCreationPolicy.STATELESS`**  
-• O `HttpSecurity` é o ponto central de toda configuração — vale dedicar tempo para entender cada método  
-• Os filtros personalizados (especialmente `addFilterBefore`) são a porta de entrada para implementar JWT  
+```
+Requisição HTTP
+  → AuthenticationFilter
+  → AuthenticationManager
+  → DaoAuthenticationProvider
+  → UserDetailsService
+  → Banco de Dados
+  → UserDetails
+  → Token de Autenticação
+  → SecurityContext
+```
+
+Cada componente tem uma responsabilidade bem definida nessa cadeia. Entender o papel de cada um é o fundamento para trabalhar com Spring Security no dia a dia.
+    
+  </details>
+
+
+
+
+
+  <details>
+  <summary><h2>8.2 Os Componentes Principais</h2></summary>
+    
+### `DaoAuthenticationProvider`
+
+O nome pode confundir, mas "Dao" vem de *Data Access Object* — uma referência a padrões de acesso a dados, não ao banco em si. Esse componente é o **orquestrador da autenticação**. Ele:
+
+- Recebe o username e password da requisição
+- Usa o `UserDetailsService` para buscar o usuário
+- Compara a senha recebida com a senha armazenada via `PasswordEncoder`
+- Lança exceção se as credenciais forem inválidas
+
+Para que o Spring Security saiba qual `UserDetailsService` usar e como validar senhas, precisamos registrar o `DaoAuthenticationProvider` explicitamente como um Bean. Por padrão, o framework configura um internamente com valores básicos — ao declarar o Bean, você assume o controle e conecta os componentes da sua aplicação.
+
+```java
+@Bean
+public AuthenticationProvider authenticationProvider() {
+    DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+    provider.setUserDetailsService(userDetailsService); // sua implementação
+    provider.setPasswordEncoder(passwordEncoder());     // ex: BCryptPasswordEncoder
+    return provider;
+}
+```
+
+> 💡 O tipo de retorno é `AuthenticationProvider` (interface), não `DaoAuthenticationProvider` (implementação). Isso segue o princípio de programar para interfaces — o Spring Security trabalha com qualquer provedor que implemente essa interface, o que facilita trocar a implementação no futuro se necessário.
+> 
+
+---
+
+### `UserDetailsService`
+
+É a **ponte entre o Spring Security e o seu banco de dados**. O Spring Security não conhece sua estrutura de tabelas, seu ORM ou seu repositório — ele apenas sabe que pode chamar esse método e espera receber um `UserDetails` de volta.
+
+|  |  |
+| --- | --- |
+| **Interface** | `UserDetailsService` |
+| **Único método** | `loadUserByUsername(String username)` |
+| **Retorno** | `UserDetails` (ou lança `UsernameNotFoundException`) |
+
+Implementação típica:
+
+```java
+@Service
+public class MyUserDetailsService implements UserDetailsService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Override
+    public UserDetails loadUserByUsername(String username)
+                                  throws UsernameNotFoundException {
+        return userRepository.findByUsername(username)
+            .orElseThrow(() ->
+                new UsernameNotFoundException("Usuário não encontrado"));
+    }
+}
+```
+
+---
+
+### `UserDetails`
+
+É o **contrato que o Spring Security entende** para representar um usuário autenticado. Sua entidade de domínio precisa "falar a língua" do Spring Security implementando essa interface.
+
+Métodos obrigatórios da interface:
+
+- `getUsername()` — retorna o identificador único do usuário
+- `getPassword()` — retorna a senha (deve estar encodada)
+- `getAuthorities()` — retorna as permissões/roles do usuário
+- `isAccountNonExpired()`, `isAccountNonLocked()`, `isCredentialsNonExpired()`, `isEnabled()` — controles de acesso
+
+---
+
+### Duas Abordagens para `UserDetails`
+
+### Opção A — Entidade implementa `UserDetails` diretamente
+
+Mais simples, mas mistura lógica de domínio com lógica de segurança:
+
+```java
+@Entity
+public class User implements UserDetails {
+    private String username;
+    private String password;
+    private String role;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role));
+    }
+    // ...outros métodos
+}
+```
+
+### Opção B — Classe separada UserPrincipal (recomendada)
+
+Separa responsabilidades. Sua entidade fica limpa, e a classe `UserPrincipal` cuida da autenticação:
+
+```java
+public class UserPrincipal implements UserDetails {
+
+    private final User user; // sua entidade de domínio
+
+    public UserPrincipal(User user) { this.user = user; }
+
+    @Override
+    public String getUsername() { return user.getEmail(); }
+
+    @Override
+    public String getPassword() { return user.getPasswordHash(); }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return user.getRoles().stream()
+            .map(r -> new SimpleGrantedAuthority(r.getName()))
+            .collect(Collectors.toList());
+    }
+    // ...
+}
+```
+
+> **Qual usar?**
+> 
+> - Projetos simples ou prototipagem → **Opção A** (menos código)
+> - Projetos de produção → **Opção B** (melhor separação de responsabilidades)
+> - A Opção B também facilita testes unitários, pois isola a lógica de autenticação
+    
+  </details>
+
+  <details>
+  <summary><h2>8.3 PasswordEncoder</h2></summary>
+
+### Por que é tão importante?
+
+**Nunca salve uma senha em texto puro no banco de dados.** Se o banco vazar, todas as senhas ficam expostas imediatamente. O `PasswordEncoder` resolve isso através de **hashing** — uma função de mão única que transforma a senha em uma string embaralhada sem possibilidade de reversão.
+
+Na autenticação, em vez de "*descriptografar*" a senha salva, o Spring aplica o mesmo hash na senha digitada e **compara os dois resultados**:
+
+```
+Cadastro:  "minhasenha123"  →  bcrypt  →  "$2a$10$xK8..."  (salvo no banco)
+Login:     "minhasenha123"  →  bcrypt  →  "$2a$10$xK8..."  ✅ bate!
+Login:     "senhaerrada"    →  bcrypt  →  "$2a$10$zzZ..."  ❌ não bate!
+```
+
+---
+
+### BCryptPasswordEncoder
+
+O Spring Security recomenda o **BCrypt**, que tem vantagens sobre hashes simples como MD5 ou SHA-256:
+
+- **Salt automático** — mistura um valor aleatório à senha antes de hashear, então duas pessoas com a mesma senha terão hashes diferentes no banco. Isso impede ataques de *rainbow table*.
+- **Custo configurável** — o "strength" (padrão 10) controla o processamento necessário. Quanto maior, mais lento e mais difícil de quebrar por força bruta.
+
+```java
+@Bean
+public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder(); // strength padrão = 10
+    // ou: new BCryptPasswordEncoder(12) para mais segurança
+}
+```
+
+---
+
+### Como ele se encaixa no fluxo
+
+O `DaoAuthenticationProvider` usa o `PasswordEncoder` internamente na comparação:
+
+```
+Login do usuário
+  → DaoAuthenticationProvider recebe "minhasenha123"
+  → chama UserDetailsService.loadUserByUsername()
+  → obtém o UserDetails com o hash "$2a$10$xK8..." do banco
+  → chama passwordEncoder.matches("minhasenha123", "$2a$10$xK8...")
+  → se true  → autenticado ✅
+  → se false → BadCredentialsException ❌
+```
+
+---
+
+### Encodando no cadastro
+
+Na hora de cadastrar um usuário, você precisa encodar a senha **manualmente** antes de salvar:
+
+```java
+@Service
+public class UserService {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    public void cadastrar(String username, String rawPassword) {
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(rawPassword)); // encode aqui!
+        userRepository.save(user);
+    }
+}
+```
+
+> ⚠️ **Erro clássico de iniciante:** salvar a senha sem encodar no cadastro e só configurar o encoder na autenticação. O login vai falhar sempre, porque o Spring vai comparar o hash com texto puro e nunca vai bater.
 >
+  </details>
+  
 </details>
 
 
